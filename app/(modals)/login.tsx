@@ -48,7 +48,7 @@ const LoginModal: React.FC<LoginModalProps> = ({}) => {
     } catch (err) {
       console.error("OAuth error", err);
     } finally {
-      router.push('/');
+      router.push("/");
     }
   };
 
@@ -57,6 +57,7 @@ const LoginModal: React.FC<LoginModalProps> = ({}) => {
       <TextInput
         autoCapitalize="none"
         placeholder="Email"
+        placeholderTextColor={gray}
         style={[
           defaultStyles.inputField,
           {
@@ -90,50 +91,70 @@ const LoginModal: React.FC<LoginModalProps> = ({}) => {
 
       <View style={{ gap: 20 }}>
         <TouchableOpacity
-          style={[styles.btnOutline, { backgroundColor: card }]}
+          style={[
+            styles.btnOutline,
+            { backgroundColor: card, borderColor: text },
+          ]}
         >
           <Ionicons
             name="mail-outline"
             size={24}
-            style={defaultStyles.btnIcon}
+            style={[defaultStyles.btnIcon, { color: text }]}
           />
-          <Text style={styles.btnOutlineText}>Continue with Phone</Text>
+          <Text style={[styles.btnOutlineText, { color: text }]}>
+            Continue with Phone
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.btnOutline, { backgroundColor: card }]}
+          style={[
+            styles.btnOutline,
+            { backgroundColor: card, borderColor: text },
+          ]}
           onPress={() => onSelectAuth(Strategy.Apple)}
         >
           <Ionicons
             name="md-logo-apple"
             size={24}
-            style={defaultStyles.btnIcon}
+            style={[defaultStyles.btnIcon, { color: text }]}
           />
-          <Text style={styles.btnOutlineText}>Continue with Apple</Text>
+          <Text style={[styles.btnOutlineText, { color: text }]}>
+            Continue with Apple
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.btnOutline, { backgroundColor: card }]}
+          style={[
+            styles.btnOutline,
+            { backgroundColor: card, borderColor: text },
+          ]}
           onPress={() => onSelectAuth(Strategy.Google)}
         >
           <Ionicons
             name="md-logo-google"
             size={24}
-            style={defaultStyles.btnIcon}
+            style={[defaultStyles.btnIcon, { color: text }]}
           />
-          <Text style={styles.btnOutlineText}>Continue with Google</Text>
+          <Text style={[styles.btnOutlineText, { color: text }]}>
+            Continue with Google
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.btnOutline, { backgroundColor: card }]}
+          style={[
+            styles.btnOutline,
+            { backgroundColor: card, borderColor: text },
+          ]}
           onPress={() => onSelectAuth(Strategy.Facebook)}
         >
           <Ionicons
             name="md-logo-facebook"
             size={24}
-            style={defaultStyles.btnIcon}
+            style={[defaultStyles.btnIcon, { color: text }]}
           />
-          <Text style={styles.btnOutlineText}>Continue with Facebook</Text>
+          <Text style={[styles.btnOutlineText, { color: text }]}>
+            Continue with Facebook
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -150,10 +171,8 @@ const styles = StyleSheet.create({
   input: {
     height: 44,
     borderWidth: 1,
-    borderColor: "#ABABAB",
     borderRadius: 8,
     padding: 10,
-    backgroundColor: "#FFF",
   },
   separator: {
     flexDirection: "row",
@@ -165,7 +184,6 @@ const styles = StyleSheet.create({
     fontFamily: "SemiBold",
   },
   btnOutline: {
-    backgroundColor: "#fff",
     borderWidth: 1,
     height: 50,
     borderRadius: 8,

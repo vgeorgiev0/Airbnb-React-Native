@@ -1,20 +1,20 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useMemo, useState } from "react";
-import { Link, Stack } from "expo-router";
-import ExploreHeader from "@/components/ExploreHeader";
-import Listings from "@/components/Listings";
-import useColors from "@/hooks/useColors";
 import listingsData from "@/assets/data/airbnb-listings.json";
+import ExploreHeader from "@/components/ExploreHeader";
+import ListingsBottomSheet from "@/components/ListingsBottomSheet";
+import useColors from "@/hooks/useColors";
+import { Listing } from "@/types/listing";
+import { Stack } from "expo-router";
+import React, { useMemo, useState } from "react";
+import { StyleSheet, View } from "react-native";
 
 interface HomeScreenProps {}
 
 const HomeScreen: React.FC<HomeScreenProps> = ({}) => {
-  const { background, card } = useColors();
+  const { background } = useColors();
   const [category, setCategory] = useState("Tiny homes");
-  const items = useMemo(() => listingsData as any, []);
+  const items = useMemo(() => listingsData as Listing[], []);
 
   const onDataChange = (category: string) => {
-    console.log(category);
     setCategory(category);
   };
 
@@ -25,7 +25,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({}) => {
           header: () => <ExploreHeader onCategoryChange={onDataChange} />,
         }}
       />
-      <Listings category={category} listings={items} refresh={1} />
+      <ListingsBottomSheet items={items} category={category} />
     </View>
   );
 };
