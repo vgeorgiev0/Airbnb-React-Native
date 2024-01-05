@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { customDarkTheme, customDefaultTheme } from "../constants/Themes";
+import ModalHeaderText from "@/components/ModalHeaderText";
 
 const tokenCache = {
   async getToken(key: string) {
@@ -113,15 +114,15 @@ function RootLayoutNav() {
           options={{
             headerTitle: "",
             headerTransparent: true,
-            // animation: "slide_from_right",
-            // headerShown: false,
-            // animation: "slide_from_bottom",
+            animation: "slide_from_right",
           }}
         />
         <Stack.Screen
           name="(modals)/booking"
           options={{
             presentation: "transparentModal",
+            headerTransparent: true,
+            headerTitle: () => <ModalHeaderText />,
             animation: "fade",
             headerTitleAlign: "center",
             headerLeft: () => (
