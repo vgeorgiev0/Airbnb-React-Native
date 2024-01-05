@@ -1,21 +1,22 @@
 import Listings from "@/components/Listings";
 import useColors from "@/hooks/useColors";
+import { Listing } from "@/types/listing";
 import { Ionicons } from "@expo/vector-icons";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useMemo, useRef, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface ListingsBottomSheetProps {
-  items: any[];
+  listings: Listing[];
   category: string;
 }
 
 const ListingsBottomSheet: React.FC<ListingsBottomSheetProps> = ({
-  items,
+  listings: items,
   category,
 }) => {
   const { text, tint, card } = useColors();
-  const snapPoints = useMemo(() => ["10%", "100%"], []);
+  const snapPoints = useMemo(() => ["12%", "100%"], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [refresh, setRefresh] = useState<number>(0);
 

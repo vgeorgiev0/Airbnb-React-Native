@@ -4,7 +4,7 @@ import Colors from "./Colors";
 export const defaultStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDFFFF",
+    // backgroundColor: "#FDFFFF",
   },
   inputField: {
     height: 44,

@@ -1,6 +1,7 @@
 import listingsData from "@/assets/data/airbnb-listings.json";
 import ExploreHeader from "@/components/ExploreHeader";
 import ListingsBottomSheet from "@/components/ListingsBottomSheet";
+import ListingsMap from "@/components/ListingsMap";
 import useColors from "@/hooks/useColors";
 import { Listing } from "@/types/listing";
 import { Stack } from "expo-router";
@@ -12,7 +13,13 @@ interface HomeScreenProps {}
 const HomeScreen: React.FC<HomeScreenProps> = ({}) => {
   const { background } = useColors();
   const [category, setCategory] = useState("Tiny homes");
-  const items = useMemo(() => listingsData as Listing[], []);
+  const items = useMemo(
+    () =>
+      (listingsData as Listing[]).filter(
+        (listing) => listing.latitude && listing.longitude
+      ),
+    []
+  );
 
   const onDataChange = (category: string) => {
     setCategory(category);
@@ -25,7 +32,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({}) => {
           header: () => <ExploreHeader onCategoryChange={onDataChange} />,
         }}
       />
-      <ListingsBottomSheet items={items} category={category} />
+      <ListingsMap listings={items} />
+      <ListingsBottomSheet listings={items} category={category} />
     </View>
   );
 };
