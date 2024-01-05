@@ -108,7 +108,10 @@ function RootLayoutNav() {
             ),
           }}
         />
-        <Stack.Screen name="listing/[id]" options={{ headerTitle: "" }} />
+        <Stack.Screen
+          name="listing/[id]"
+          options={{ headerTitle: "", headerTransparent: true }}
+        />
         <Stack.Screen
           name="(modals)/booking"
           options={{
@@ -126,4 +129,4 @@ function RootLayoutNav() {
     </ThemeProvider>
   );
 }
-// ! https://www.youtube.com/watch?v=iWzUZiVoiR0&t=389s || 1:10:40
+// TODO   https://www.youtube.com/watch?v=iWzUZiVoiR0&t=389s || 2:10:40

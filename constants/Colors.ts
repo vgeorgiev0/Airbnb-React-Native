@@ -3,7 +3,7 @@ export default {
     text: "#272D2D",
     background: "#EDF5FC",
     tint: "#E36414",
-    grey: "#ccc",
+    grey: "#a9a9a9",
     tabIconSelected: "#C4BAAB",
     border: "transparent",
     card: "#fff",
