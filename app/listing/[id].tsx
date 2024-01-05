@@ -1,43 +1,138 @@
+import listingsData from "@/assets/data/airbnb-listings.json";
+import { defaultStyles } from "@/constants/Styles";
+import useColors from "@/hooks/useColors";
+import { Listing } from "@/types/listing";
+import { Ionicons } from "@expo/vector-icons";
+import { useLocalSearchParams, useNavigation } from "expo-router";
+import React, { useLayoutEffect } from "react";
 import {
   Dimensions,
   Image,
-  ScrollView,
+  Share,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
-import { useLocalSearchParams } from "expo-router";
-import listingsData from "@/assets/data/airbnb-listings.json";
-import { Listing } from "@/types/listing";
-import useColors from "@/hooks/useColors";
-import Animated, { SlideInDown, useAnimatedRef } from "react-native-reanimated";
-import { Ionicons } from "@expo/vector-icons";
-import { defaultStyles } from "@/constants/Styles";
+import Animated, {
+  SlideInDown,
+  interpolate,
+  useAnimatedRef,
+  useAnimatedStyle,
+  useScrollViewOffset,
+} from "react-native-reanimated";
 
 const { width } = Dimensions.get("window");
 const height = 300;
 interface PageProps {}
 
 const Page: React.FC<PageProps> = ({}) => {
-  const { card, text, gray } = useColors();
+  const { card, text, gray, primary } = useColors();
   const { id } = useLocalSearchParams<{ id: string }>();
   const listing = (listingsData as Listing[]).find((item) => item.id === id);
+
+  const navigation = useNavigation();
+
+  const shareListing = async () => {
+    try {
+      await Share.share({
+        title: listing?.name,
+        url: listing?.listing_url || "",
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: "",
+      headerTransparent: true,
+      headerBackground: () => (
+        <Animated.View
+          style={[
+            headerAnimatedStyle,
+            styles.header,
+            { borderBottomColor: gray, backgroundColor: card },
+          ]}
+        />
+      ),
+      headerRight: () => (
+        <View style={styles.bar}>
+          <TouchableOpacity
+            style={[styles.roundButton, { borderColor: gray }]}
+            onPress={shareListing}
+          >
+            <Ionicons name="share-outline" size={22} color={"#000"} />
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.roundButton, { borderColor: gray }]}>
+            <Ionicons name="heart-outline" size={22} color={"#000"} />
+          </TouchableOpacity>
+        </View>
+      ),
+      headerLeft: () => (
+        <TouchableOpacity
+          style={[styles.roundButton, { borderColor: gray }]}
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name="chevron-back" size={24} color={"#000"} />
+        </TouchableOpacity>
+      ),
+    });
+  }, []);
+
+  // TODO Create a library using the following
+  //  ||
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const scrollOffset = useScrollViewOffset(scrollRef);
+  const imageAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: interpolate(
+            scrollOffset.value,
+            [-height, 0, height],
+            [-height / 2, 0, height * 0.75]
+          ),
+        },
+        {
+          scale: interpolate(
+            scrollOffset.value,
+            [-height, 0, height],
+            [2, 1, 1]
+          ),
+        },
+      ],
+    };
+  });
+
+  const headerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(scrollOffset.value, [0, height / 1.5], [0, 1]),
+    };
+  });
+  //  ||
+  // TODO Create a library using the above
 
   return (
     <View style={[styles.container, { backgroundColor: card }]}>
       <Animated.ScrollView
         ref={scrollRef}
+        scrollEventThrottle={16}
         contentContainerStyle={{ paddingBottom: 100 }}
       >
         <Animated.Image
+          sharedTransitionTag={`image-${listing?.id}`}
           source={{ uri: listing?.xl_picture_url }}
-          style={styles.image}
+          style={[styles.image, imageAnimatedStyle]}
         />
         <View style={[styles.infoContainer, { backgroundColor: card }]}>
-          <Text style={styles.name}>{listing?.name}</Text>
+          <Animated.Text
+            sharedTransitionTag={`text-${listing?.id}`}
+            style={styles.name}
+          >
+            {listing?.name}
+          </Animated.Text>
           <Text style={styles.location}>
             {listing?.room_type} in {listing?.smart_location}
           </Text>
@@ -163,5 +258,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 10,
     fontFamily: "Regular",
+  },
+  roundButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 50,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: StyleSheet.hairlineWidth,
+  },
+  bar: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+  },
+  header: {
+    height: 120,
+    borderWidth: StyleSheet.hairlineWidth,
   },
 });
