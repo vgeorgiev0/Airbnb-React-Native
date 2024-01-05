@@ -1,6 +1,7 @@
 import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemeProvider } from "@react-navigation/native";
+import Constants from "expo-constants";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
@@ -8,7 +9,6 @@ import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { customDarkTheme, customDefaultTheme } from "../constants/Themes";
-import Constants from "expo-constants";
 
 const tokenCache = {
   async getToken(key: string) {
@@ -83,7 +83,7 @@ function RootLayoutNav() {
     if (isLoaded && !isSignedIn) {
       router.push("/(modals)/login");
     }
-  }, [isLoaded, isSignedIn]);
+  }, [isLoaded]);
 
   return (
     <ThemeProvider
@@ -126,4 +126,4 @@ function RootLayoutNav() {
     </ThemeProvider>
   );
 }
-// ! https://www.youtube.com/watch?v=iWzUZiVoiR0&t=389s || 31:51
+// ! https://www.youtube.com/watch?v=iWzUZiVoiR0&t=389s || 1:10:40

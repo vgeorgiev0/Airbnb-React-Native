@@ -9,7 +9,14 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({}) => {
   const { signOut, isSignedIn } = useAuth();
   return (
     <View>
-      {isSignedIn && <Button title="Log out" onPress={() => signOut} />}
+      {isSignedIn && (
+        <Button
+          title="Log out"
+          onPress={() => {
+            signOut();
+          }}
+        />
+      )}
       {!isSignedIn && (
         <Link href={"/(modals)/login"}>
           <Text>Login</Text>

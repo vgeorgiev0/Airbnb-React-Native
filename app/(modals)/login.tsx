@@ -43,10 +43,12 @@ const LoginModal: React.FC<LoginModalProps> = ({}) => {
 
       if (createdSessionId) {
         setActive!({ session: createdSessionId });
-        router.back();
+        // router.back();
       }
     } catch (err) {
       console.error("OAuth error", err);
+    } finally {
+      router.push('/');
     }
   };
 
